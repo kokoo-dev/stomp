@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th=http://www.thymeleaf.org lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <link th:href="@{/css/chat.css}" rel="stylesheet" />
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">
+        Chat Room
+    </div>
+    <div class="chat-messages" id="chatMessages">
+        <!-- Messages will appear here -->
+    </div>
+    <div class="chat-input-container">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Type a message...">
+        <button id="sendButton" class="chat-send-btn">Send</button>
+    </div>
+</div>
+
+<input type="hidden" id="roomId" th:value="${roomId}">
+
+<script type="text/javascript" th:src="@{/js/sockjs.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/stomp.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/chat.js}"></script>
+</body>
+</html>
