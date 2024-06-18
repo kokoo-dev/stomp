@@ -1,5 +1,6 @@
 package com.kokoo.stomp.interceptor
 
+import com.kokoo.stomp.service.ChatService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.Message
@@ -9,7 +10,9 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.messaging.support.ChannelInterceptor
 
 @Configuration
-class StompInterceptor() : ChannelInterceptor {
+class StompInterceptor(
+//    private val chatService: ChatService
+) : ChannelInterceptor {
 
     private val log = KotlinLogging.logger {}
 
@@ -24,7 +27,7 @@ class StompInterceptor() : ChannelInterceptor {
             }
 
             SimpMessageType.DISCONNECT -> {
-
+//                chatService.leaveRoom(accessor.sessionId.orEmpty())
             }
 
             SimpMessageType.HEARTBEAT -> {

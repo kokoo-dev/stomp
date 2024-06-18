@@ -14,12 +14,12 @@ class SocketController(
 ) {
 
     @MessageMapping("")
-    fun enterRoom(simpMessageHeaderAccessor: SimpMessageHeaderAccessor, roomDto: RoomDto) {
-        chatService.enterRoom(roomDto)
+    fun enterRoom(accessor: SimpMessageHeaderAccessor, roomDto: RoomDto) {
+        chatService.enterRoom(accessor, roomDto)
     }
 
     @MessageMapping("/chat")
-    fun sendMessage(simpMessageHeaderAccessor: SimpMessageHeaderAccessor, messageDto: MessageDto) {
+    fun sendMessage(accessor: SimpMessageHeaderAccessor, messageDto: MessageDto) {
         chatService.sendMessage(messageDto)
     }
 }
