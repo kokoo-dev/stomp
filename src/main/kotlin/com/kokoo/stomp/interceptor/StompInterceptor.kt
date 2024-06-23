@@ -10,9 +10,7 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.messaging.support.ChannelInterceptor
 
 @Configuration
-class StompInterceptor(
-//    private val chatService: ChatService
-) : ChannelInterceptor {
+class StompInterceptor : ChannelInterceptor {
 
     private val log = KotlinLogging.logger {}
 
@@ -27,7 +25,7 @@ class StompInterceptor(
             }
 
             SimpMessageType.DISCONNECT -> {
-//                chatService.leaveRoom(accessor.sessionId.orEmpty())
+
             }
 
             SimpMessageType.HEARTBEAT -> {

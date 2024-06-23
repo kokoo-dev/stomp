@@ -1,6 +1,20 @@
 const userName = prompt("사용자 이름 입력:")
 const roomId = document.getElementById('roomId').value
 
+const userAction = {
+    ENTRANCE: {
+        getSystemMessage: (userName) => {
+            return `${userName}님이 입장하였습니다.`
+        }
+    },
+    EXIT: {
+        getSystemMessage: (userName) => {
+            return `${userName}님이 퇴장하였습니다.`
+        }
+    }
+}
+Object.freeze(userAction)
+
 const sockJs = new SockJS('/chat')
 const stomp = Stomp.over(sockJs)
 
@@ -11,7 +25,7 @@ window.onload = () => {
         stomp.subscribe(`/sub/room/${roomId}`, (content) => {
             const subscribeMessage = JSON.parse(content.body)
             const chat = {
-                message: `${subscribeMessage.userName}님이 입장하였습니다.`,
+                message: userAction[subscribeMessage.userAction].getSystemMessage(subscribeMessage.userName),
                 isSystemMessage: true
             }
             addMessage(chat)

@@ -49,7 +49,6 @@ class ChatService(
         roomUserRepository.deleteById(roomUser.id)
 
         simpMessageTemplate.convertAndSend("/sub/room/${roomUser.roomId}", roomDto)
-
     }
 
     fun sendMessage(messageDto: MessageDto) {
