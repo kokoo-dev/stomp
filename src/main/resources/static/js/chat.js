@@ -17,36 +17,11 @@ Object.freeze(userAction)
 
 const sockJs = new SockJS('/chat')
 const stomp = Stomp.over(sockJs)
+stomp.debug = null
 
 window.onload = () => {
-    stomp.connect({}, () => {
-        console.log('STOMP Connection')
-
-        stomp.subscribe(`/sub/room/${roomId}`, (content) => {
-            const subscribeMessage = JSON.parse(content.body)
-            const chat = {
-                message: userAction[subscribeMessage.userAction].getSystemMessage(subscribeMessage.userName),
-                isSystemMessage: true
-            }
-            addMessage(chat)
-        })
-
-        stomp.subscribe(`/sub/room/${roomId}/chat`, (content) => {
-            const subscribeMessage = JSON.parse(content.body)
-            const chat = {
-                message: subscribeMessage.message,
-                isMyMessage: subscribeMessage.userName == userName,
-                writer: subscribeMessage.userName
-            }
-            addMessage(chat)
-        })
-
-        const enterMessage = {
-            roomId: roomId,
-            userName: userName
-        }
-        stomp.send('/pub/room', {}, JSON.stringify(enterMessage))
-    })
+    const headers = {}
+    stomp.connect(headers, onConnect, onError)
 }
 
 document.getElementById('sendButton').addEventListener('click', () => {
@@ -67,6 +42,37 @@ document.getElementById('chatInput').addEventListener('keypress', (e) => {
         document.getElementById('sendButton').click()
     }
 })
+
+const onConnect = (frame) => {
+    stomp.subscribe(`/sub/room/${roomId}`, (content) => {
+        const subscribeMessage = JSON.parse(content.body)
+        const chat = {
+            message: userAction[subscribeMessage.userAction].getSystemMessage(subscribeMessage.userName),
+            isSystemMessage: true
+        }
+        addMessage(chat)
+    })
+
+    stomp.subscribe(`/sub/room/${roomId}/chat`, (content) => {
+        const subscribeMessage = JSON.parse(content.body)
+        const chat = {
+            message: subscribeMessage.message,
+            isMyMessage: subscribeMessage.userName == userName,
+            writer: subscribeMessage.userName
+        }
+        addMessage(chat)
+    })
+
+    const enterMessage = {
+        roomId: roomId,
+        userName: userName
+    }
+    stomp.send('/pub/room', {}, JSON.stringify(enterMessage))
+}
+
+const onError = (error) => {
+    console.error(error)
+}
 
 const addMessage = ({ message = '', isMyMessage = false, writer = '', isSystemMessage = false }) => {
     const messageContainer = document.createElement('div')

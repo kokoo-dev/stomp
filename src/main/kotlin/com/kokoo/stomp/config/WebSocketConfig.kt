@@ -1,5 +1,6 @@
 package com.kokoo.stomp.config
 
+import com.kokoo.stomp.exception.StompErrorHandler
 import com.kokoo.stomp.interceptor.StompInterceptor
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.simp.config.ChannelRegistration
@@ -12,13 +13,16 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 class WebSocketConfig(
     private val stompInterceptor: StompInterceptor,
+    private val stompErrorHandler: StompErrorHandler
 ): WebSocketMessageBrokerConfigurer {
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        // TODO Handshake Handler, Error Handler
+        // TODO Handshake Handler
         registry.addEndpoint("/chat")
             .setAllowedOriginPatterns("*")
             .withSockJS()
+
+        registry.setErrorHandler(stompErrorHandler)
     }
 
     override fun configureMessageBroker(registry: MessageBrokerRegistry) {

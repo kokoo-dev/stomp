@@ -5,5 +5,6 @@ enum class StompStatus(
     val message: String
 ) {
     OK("OK", "성공"),
-    SERVER_ERROR("SERVER_ERROR", "서버 오류")
+    SERVER_ERROR("SERVER_ERROR", "서버 오류"),
+    ALREADY_EXISTS("ALREADY_EXISTS", "이미 존재합니다."),
 }

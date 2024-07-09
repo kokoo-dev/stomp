@@ -1,10 +1,12 @@
 package com.kokoo.stomp.service
 
+import com.kokoo.stomp.constant.StompStatus
 import com.kokoo.stomp.constant.UserAction
 import com.kokoo.stomp.domain.Room
 import com.kokoo.stomp.domain.RoomUser
 import com.kokoo.stomp.dto.MessageDto
 import com.kokoo.stomp.dto.RoomDto
+import com.kokoo.stomp.exception.SocketCustomException
 import com.kokoo.stomp.repository.RoomRepository
 import com.kokoo.stomp.repository.RoomUserRepository
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor
@@ -28,8 +30,8 @@ class ChatService(
         }
 
         val userName = roomDto.userName
-        roomUserRepository.findByUserName(userName)?.let {
-            // TODO throw
+        roomUserRepository.findByUserName(userName)?.run {
+            throw SocketCustomException(StompStatus.ALREADY_EXISTS, accessor.sessionId)
         }
 
         roomUserRepository.save(RoomUser(roomId = roomId, userName = userName, sessionId = accessor.sessionId.orEmpty()))
