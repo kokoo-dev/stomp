@@ -13,12 +13,13 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 class WebSocketConfig(
     private val stompInterceptor: StompInterceptor,
+    private val stompHandshakeHandler: StompHandshakeHandler,
     private val stompErrorHandler: StompErrorHandler
 ): WebSocketMessageBrokerConfigurer {
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        // TODO Handshake Handler
         registry.addEndpoint("/chat")
+            .setHandshakeHandler(stompHandshakeHandler)
             .setAllowedOriginPatterns("*")
             .withSockJS()
 
