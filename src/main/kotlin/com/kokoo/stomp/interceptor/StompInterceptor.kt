@@ -1,6 +1,7 @@
 package com.kokoo.stomp.interceptor
 
-import com.kokoo.stomp.service.ChatService
+import com.kokoo.stomp.constant.StompStatus
+import com.kokoo.stomp.exception.SocketCustomException
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.Message
@@ -21,7 +22,9 @@ class StompInterceptor : ChannelInterceptor {
 
         when (accessor.messageType) {
             SimpMessageType.CONNECT -> {
-
+                if (true) { // TODO 중복 입장 체크
+                    throw SocketCustomException(StompStatus.ALREADY_EXISTS, accessor.sessionId)
+                }
             }
 
             SimpMessageType.DISCONNECT -> {

@@ -30,9 +30,10 @@ class ChatService(
         }
 
         val userName = roomDto.userName
-        roomUserRepository.findByUserName(userName)?.run {
-            throw SocketCustomException(StompStatus.ALREADY_EXISTS, accessor.sessionId)
-        }
+        // exception not working, interceptor에서 처리
+//        roomUserRepository.findByUserName(userName)?.run {
+//            throw SocketCustomException(StompStatus.ALREADY_EXISTS, accessor.sessionId)
+//        }
 
         roomUserRepository.save(RoomUser(roomId = roomId, userName = userName, sessionId = accessor.sessionId.orEmpty()))
 
