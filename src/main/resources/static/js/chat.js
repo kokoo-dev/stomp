@@ -22,6 +22,9 @@ stomp.debug = null
 window.onload = () => {
     const headers = {}
     stomp.connect(headers, onConnect, onError)
+
+    stomp.heartbeat.outgoing = 3000;
+    stomp.heartbeat.incoming = 0; // client does not want to receive heartbeats
 }
 
 document.getElementById('sendButton').addEventListener('click', () => {

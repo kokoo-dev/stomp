@@ -22,7 +22,7 @@ class StompInterceptor : ChannelInterceptor {
 
         when (accessor.messageType) {
             SimpMessageType.CONNECT -> {
-                if (true) { // TODO 중복 입장 체크
+                if (false) { // TODO 중복 입장 체크
                     throw SocketCustomException(StompStatus.ALREADY_EXISTS, accessor.sessionId)
                 }
             }
